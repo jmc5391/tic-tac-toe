@@ -45,6 +45,10 @@ class Board:
         if self.is_valid_input(choice):
             if self.square_is_taken(choice) == False:
                 self.change_square(choice, player)
+            else:
+                self.get_input(player)
+        else:
+            self.get_input(player)
 
     def change_square(self, choice, player):
         if player == 1:
@@ -55,10 +59,23 @@ class Board:
     #method for board to reset itself
 
     #method to check if a player has won
+    def has_won(self):
+        #check horizontal lines
+        for i in range(1, 10, 3):
+            if self.squares[i] == self.squares[i+1] and self.squares[i+1] == self.squares[i+2]:
+                return True
+        #check vertical lines
+        for i in range(1, 4):
+            if self.squares[i] == self.squares[i+3] and self.squares[i+3] == self.squares[i+6]:
+                return True
+        #check diagonal lines
+        if self.squares[1] == self.squares[5] and self.squares[1] == self.squares[9]:
+            return True
+        if self.squares[3] == self.squares[5] and self.squares[3] == self.squares[7]:
+            return True
+        return False
 
     #method to check if there is a draw
-
-    #def victory(self, player):
 
     #def play_again():
         #asks player if they want to play again and returns boolean
@@ -89,10 +106,11 @@ def game(board):
             #current player picks a square
             board.get_input(player)
             #check if current player has won:
-            #if board.has_won(player):
-                #if so, tell player and end loop
-                #board.victory("1")
-                #break
+            if board.has_won():
+                #if so, tell player and end function
+                board.draw_board()
+                print("Player " + str(player) + " has won!")
+                return player
             #if not, check if draw:
             #elif board.is_draw():
                 #board.draw()
@@ -105,9 +123,9 @@ def main():
     #welcome the player
     intro()
     #loop:
-    while True:
+    #while True:
         #start the game loop
-        game(board)
+    game(board)
         #ask player if wants to play again:
         #if not board.play_again():
             #if not, break the loop
