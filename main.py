@@ -76,9 +76,60 @@ class Board:
         return False
 
     #method to check if there is a draw
+    def is_draw(self):
+        #check horizontal rows
+        for i in range(1, 10, 3):
+            sample_string = self.squares[i] + self.squares[i+1] + self.squares[i+2]
+            #if the row is clear of player symbols, there's no draw yet
+            if self.squares[i].isnumeric() and self.squares[i+1].isnumeric() and self.squares[i+2].isnumeric():
+                return False
+            #if only one player has gone in the row, there's no draw yet
+            elif 'X' in sample_string and 'O' not in sample_string:
+                return False
+            elif 'O' in sample_string and 'X' not in sample_string:
+                return False
+        #check vertical lines
+        for i in range(1, 4):
+            sample_string = self.squares[i] + self.squares[i+3] + self.squares[i+6]
+            #if the row is clear of player symbols, there's no draw yet
+            if self.squares[i].isnumeric() and self.squares[i+3].isnumeric() and self.squares[i+6].isnumeric():
+                return False
+            #if only one player has gone in the row, there's no draw yet
+            elif 'X' in sample_string and 'O' not in sample_string:
+                return False
+            elif 'O' in sample_string and 'X' not in sample_string:
+                return False
+        #check diagonal lines
+        #if the row is clear of player symbols, there's no draw yet
+        diag1 = self.squares[1] + self.squares[5] + self.squares[9]
+        diag2 = self.squares[3] + self.squares[5] + self.squares[7]
+        if self.squares[1].isnumeric() and self.squares[5].isnumeric() and self.squares[9].isnumeric():
+            return False
+        if self.squares[3].isnumeric() and self.squares[5].isnumeric() and self.squares[7].isnumeric():
+            return False
+        #if only one player has gone in the row, there's no draw yet
+        if 'X' in diag1 and 'O' not in diag1:
+            return False
+        if 'O' in diag1 and 'X' not in diag1:
+            return False
+        if 'X' in diag2 and 'O' not in diag2:
+            return False
+        if 'O' in diag2 and 'X' not in diag2:
+            return False
+        #if none of these checks return False, there's a draw and the method returns True
+        return True
 
-    #def play_again():
-        #asks player if they want to play again and returns boolean
+    def draw(self):
+        self.draw_board()
+        print("It's a draw!")
+
+    def play_again():
+        answer = input("Would you like to play again?(Y/N)")
+        answer = answer.lower()
+        if answer == 'y' or answer == 'yes':
+            return True
+        else:
+            return False
 
 def intro():
     #ran once when game is first started
@@ -112,9 +163,9 @@ def game(board):
                 print("Player " + str(player) + " has won!")
                 return player
             #if not, check if draw:
-            #elif board.is_draw():
-                #board.draw()
-                #break
+            elif board.is_draw():
+                board.draw()
+                return 0
             #if neither loop continues to player until either condition met
 
 def main():
